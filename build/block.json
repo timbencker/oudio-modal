@@ -1,0 +1,93 @@
+{
+  "name": "oudio/modal-block",
+  "version": "1.0.0",
+  "title": "Oudio Modal Block",
+  "category": "embed",
+  "icon": "external",
+  "description": "Slide-in modal from the right with iframe embed. Trigger it by assigning a CSS class to any element.",
+  "keywords": ["modal", "iframe", "checkout", "oudio", "slide-in"],
+  "textdomain": "oudio-modal-block",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php",
+  "attributes": {
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "triggerClass": {
+      "type": "string",
+      "default": "oudio-open-modal"
+    },
+    "iframeSrc": {
+      "type": "string",
+      "default": ""
+    },
+    "iframeTitle": {
+      "type": "string",
+      "default": "Checkout"
+    },
+    "iframeAllow": {
+      "type": "string",
+      "default": "payment *"
+    },
+    "iframeReferrerpolicy": {
+      "type": "string",
+      "default": "strict-origin-when-cross-origin"
+    },
+    "iframeLazy": {
+      "type": "boolean",
+      "default": true
+    },
+    "desktopWidth": {
+      "type": "number",
+      "default": 480
+    },
+    "tabletWidth": {
+      "type": "number",
+      "default": 420
+    },
+    "mobileWidth": {
+      "type": "number",
+      "default": 100
+    },
+    "mobileWidthUnit": {
+      "type": "string",
+      "default": "vw"
+    },
+    "tabletWidthUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "desktopWidthUnit": {
+      "type": "string",
+      "default": "px"
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": "rgba(0,0,0,0.5)"
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 380
+    },
+    "showCloseButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "closeOnOverlayClick": {
+      "type": "boolean",
+      "default": true
+    },
+    "closeOnEsc": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": false
+  }
+}

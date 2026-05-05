@@ -1,0 +1,49 @@
+/* ============================================================
+   EDITOR styles  (src/index.css  →  build/index.css)
+   Only loaded in the Gutenberg editor
+   ============================================================ */
+
+.oudio-modal-block-editor {
+	border: 2px dashed #c7c7c7;
+	border-radius: 6px;
+	background: #fafafa;
+}
+
+.oudio-modal-block-editor__placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px 24px;
+	text-align: center;
+	color: #555;
+	gap: 8px;
+}
+
+.oudio-modal-block-editor__icon {
+	color: #0073aa;
+	margin-bottom: 8px;
+}
+
+.oudio-modal-block-editor__placeholder h3 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 700;
+	color: #1e1e1e;
+}
+
+.oudio-modal-block-editor__placeholder p {
+	margin: 0;
+	font-size: 13px;
+}
+
+.oudio-modal-block-editor__no-src {
+	color: #cc6600;
+	font-weight: 500;
+}
+
+.oudio-modal-block-editor__sizes {
+	font-size: 12px;
+	color: #888;
+	margin-top: 4px !important;
+}
