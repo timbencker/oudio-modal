@@ -1,6 +1,6 @@
 {
-  "name": "oudio-modal-block",
-  "version": "1.0.0",
+  "name": "oudio-modal-beta",
+  "version": "1.2.1",
   "description": "Gutenberg block – slide-in modal with iframe support",
   "scripts": {
     "build":   "wp-scripts build   --webpack-src-dir=src --output-path=build",

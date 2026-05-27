@@ -10,52 +10,129 @@
 ( function () {
 	'use strict';
 
+	let bodyLockCount = 0;
+
+	function lockBodyScroll() {
+		bodyLockCount += 1;
+		if ( bodyLockCount === 1 ) {
+			document.body.classList.add( 'oudio-modal-beta-open' );
+		}
+	}
+
+	function unlockBodyScroll() {
+		if ( bodyLockCount <= 0 ) {
+			return;
+		}
+		bodyLockCount -= 1;
+		if ( bodyLockCount === 0 ) {
+			document.body.classList.remove( 'oudio-modal-beta-open' );
+		}
+	}
+
+	function getFocusableElements( panel ) {
+		return panel.querySelectorAll(
+			'button:not([disabled]), iframe, [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+		);
+	}
+
 	/**
 	 * Initialise a single modal instance.
 	 *
-	 * @param {HTMLElement} panel       The .oudio-modal-panel element
-	 * @param {HTMLElement} overlay     The .oudio-modal-overlay element
+	 * @param {HTMLElement} wrap        The .oudio-modal-beta-wrap element
+	 * @param {HTMLElement} panel       The .oudio-modal-beta-panel element
+	 * @param {HTMLElement} overlay     The .oudio-modal-beta-overlay element
 	 * @param {Object}      cfg         Configuration from data attributes
 	 */
-	function initModal( panel, overlay, cfg ) {
-		const closeBtn = panel.querySelector( '.oudio-modal-close' );
+	function initModal( wrap, panel, overlay, cfg ) {
+		const closeBtn = panel.querySelector( '.oudio-modal-beta-close' );
 		let isOpen = false;
+		let lastTrigger = null;
+		let focusTrapHandler = null;
 
-		function openModal() {
-			if ( isOpen ) return;
+		function removeFocusTrap() {
+			if ( focusTrapHandler ) {
+				panel.removeEventListener( 'keydown', focusTrapHandler );
+				focusTrapHandler = null;
+			}
+		}
+
+		function installFocusTrap() {
+			removeFocusTrap();
+			focusTrapHandler = ( e ) => {
+				if ( e.key !== 'Tab' || ! isOpen ) {
+					return;
+				}
+				const focusable = getFocusableElements( panel );
+				if ( ! focusable.length ) {
+					return;
+				}
+				const first = focusable[ 0 ];
+				const last = focusable[ focusable.length - 1 ];
+				if ( e.shiftKey && document.activeElement === first ) {
+					e.preventDefault();
+					last.focus();
+				} else if ( ! e.shiftKey && document.activeElement === last ) {
+					e.preventDefault();
+					first.focus();
+				}
+			};
+			panel.addEventListener( 'keydown', focusTrapHandler );
+		}
+
+		function openModal( triggerEl ) {
+			if ( isOpen ) {
+				return;
+			}
 			isOpen = true;
-			document.body.classList.add( 'oudio-modal-open' );
+			if ( triggerEl instanceof HTMLElement ) {
+				lastTrigger = triggerEl;
+			}
+			lockBodyScroll();
 			overlay.classList.add( 'is-open' );
 			panel.classList.add( 'is-open' );
 			panel.setAttribute( 'aria-hidden', 'false' );
-			// Return focus to close btn if visible
+			installFocusTrap();
 			if ( closeBtn ) {
 				setTimeout( () => closeBtn.focus(), Number( cfg.duration ) + 50 );
 			}
 		}
 
 		function closeModal() {
-			if ( ! isOpen ) return;
+			if ( ! isOpen ) {
+				return;
+			}
 			isOpen = false;
+			removeFocusTrap();
 			overlay.classList.remove( 'is-open' );
 			panel.classList.remove( 'is-open' );
 			panel.setAttribute( 'aria-hidden', 'true' );
 			setTimeout( () => {
-				document.body.classList.remove( 'oudio-modal-open' );
+				unlockBodyScroll();
 			}, Number( cfg.duration ) );
+			if ( lastTrigger instanceof HTMLElement ) {
+				try {
+					lastTrigger.focus();
+				} catch ( err ) {
+					/* ignore focus errors */
+				}
+			}
 		}
 
 		// Trigger elements anywhere on the page
 		function registerTriggers() {
-			if ( ! cfg.triggerClass ) return;
+			if ( ! cfg.triggerClass ) {
+				return;
+			}
 			document.querySelectorAll( '.' + cfg.triggerClass ).forEach( ( el ) => {
 				// Avoid double-binding
-				if ( el.dataset.oudioBound === cfg.blockId ) return;
+				if ( el.dataset.oudioBound === cfg.blockId ) {
+					return;
+				}
 				el.dataset.oudioBound = cfg.blockId;
 				el.style.cursor = 'pointer';
 				el.addEventListener( 'click', ( e ) => {
 					e.preventDefault();
-					openModal();
+					openModal( el );
 				} );
 			} );
 		}
@@ -68,7 +145,9 @@
 		// ESC key
 		if ( cfg.closeOnEsc ) {
 			document.addEventListener( 'keydown', ( e ) => {
-				if ( e.key === 'Escape' && isOpen ) closeModal();
+				if ( e.key === 'Escape' && isOpen ) {
+					closeModal();
+				}
 			} );
 		}
 
@@ -76,6 +155,15 @@
 		if ( closeBtn ) {
 			closeBtn.addEventListener( 'click', closeModal );
 		}
+
+		// Checkout complete — close from OudioEmbed onClose
+		wrap.addEventListener( 'oudio-modal-beta-request-close', ( e ) => {
+			const detail = e.detail || {};
+			if ( detail.blockId && detail.blockId !== cfg.blockId ) {
+				return;
+			}
+			closeModal();
+		} );
 
 		// Initial trigger registration
 		registerTriggers();
@@ -91,10 +179,12 @@
 	 * Boot – find all modals and initialise them.
 	 */
 	function boot() {
-		document.querySelectorAll( '.oudio-modal-wrap' ).forEach( ( wrap ) => {
-			const panel   = wrap.querySelector( '.oudio-modal-panel' );
-			const overlay = wrap.querySelector( '.oudio-modal-overlay' );
-			if ( ! panel || ! overlay ) return;
+		document.querySelectorAll( '.oudio-modal-beta-wrap' ).forEach( ( wrap ) => {
+			const panel   = wrap.querySelector( '.oudio-modal-beta-panel' );
+			const overlay = wrap.querySelector( '.oudio-modal-beta-overlay' );
+			if ( ! panel || ! overlay ) {
+				return;
+			}
 
 			const cfg = {
 				blockId:            panel.dataset.blockId            || '',
@@ -104,7 +194,7 @@
 				duration:           panel.dataset.duration           || '380',
 			};
 
-			initModal( panel, overlay, cfg );
+			initModal( wrap, panel, overlay, cfg );
 		} );
 	}
 

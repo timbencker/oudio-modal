@@ -1,12 +1,19 @@
 {
-  "name": "oudio/modal-block",
-  "version": "1.0.0",
-  "title": "Oudio Modal Block",
+  "name": "oudio/modal-beta",
+  "version": "1.2.1",
+  "title": "Oudio Modal Beta",
   "category": "embed",
   "icon": "external",
-  "description": "Slide-in modal from the right with iframe embed. Trigger it by assigning a CSS class to any element.",
-  "keywords": ["modal", "iframe", "checkout", "oudio", "slide-in"],
-  "textdomain": "oudio-modal-block",
+  "description": "Slide-in modal from the right with iframe embed (beta). Trigger it by assigning a CSS class to any element.",
+  "keywords": [
+    "modal",
+    "iframe",
+    "checkout",
+    "oudio",
+    "slide-in",
+    "beta"
+  ],
+  "textdomain": "oudio-modal-beta",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
@@ -19,7 +26,7 @@
     },
     "triggerClass": {
       "type": "string",
-      "default": "oudio-open-modal"
+      "default": "oudio-open-modal-beta"
     },
     "iframeSrc": {
       "type": "string",
@@ -84,6 +91,30 @@
     "closeOnEsc": {
       "type": "boolean",
       "default": true
+    },
+    "enableTracking": {
+      "type": "boolean",
+      "default": false
+    },
+    "oudioAppOrigin": {
+      "type": "string",
+      "default": "https://oudio.io"
+    },
+    "metaPixelId": {
+      "type": "string",
+      "default": ""
+    },
+    "ga4MeasurementId": {
+      "type": "string",
+      "default": ""
+    },
+    "tiktokPixelId": {
+      "type": "string",
+      "default": ""
+    },
+    "shouldTrackFunction": {
+      "type": "string",
+      "default": ""
     }
   },
   "supports": {

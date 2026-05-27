@@ -4,7 +4,7 @@
    ============================================================ */
 
 /* ── Overlay backdrop ─────────────────────────────────────── */
-.oudio-modal-overlay {
+.oudio-modal-beta-overlay {
 	position: fixed;
 	inset: 0;
 	z-index: 99998;
@@ -15,19 +15,19 @@
 	/* prevent body scroll when overlay is active */
 }
 
-.oudio-modal-overlay.is-open {
+.oudio-modal-beta-overlay.is-open {
 	opacity: 1;
 	pointer-events: auto;
 }
 
 /* ── Modal panel ──────────────────────────────────────────── */
-.oudio-modal-panel {
+.oudio-modal-beta-panel {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 99999;
-	width: var(--oudio-modal-width-desktop, 480px);
+	width: var(--oudio-modal-beta-width-desktop, 480px);
 	background: #fff;
 	box-shadow: -8px 0 40px rgba(0, 0, 0, 0.18);
 	transform: translateX(100%);
@@ -37,12 +37,12 @@
 	overflow: hidden;
 }
 
-.oudio-modal-panel.is-open {
+.oudio-modal-beta-panel.is-open {
 	transform: translateX(0);
 }
 
 /* ── Close button — immer rechts oben INNEN im Panel ── */
-.oudio-modal-close {
+.oudio-modal-beta-close {
 	position: absolute;
 	top: 14px;
 	right: 14px;
@@ -65,27 +65,27 @@
 	z-index: 10;
 }
 
-.oudio-modal-close:hover {
+.oudio-modal-beta-close:hover {
 	background: #111;
 	color: #fff;
 	transform: scale(1.08);
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
 }
 
-.oudio-modal-close svg {
+.oudio-modal-beta-close svg {
 	display: block;
 	flex-shrink: 0;
 }
 
 /* ── iFrame ───────────────────────────────────────────────── */
-.oudio-modal-iframe-wrap {
+.oudio-modal-beta-iframe-wrap {
 	flex: 1 1 auto;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 }
 
-.oudio-modal-iframe-wrap iframe {
+.oudio-modal-beta-iframe-wrap iframe {
 	flex: 1 1 auto;
 	width: 100%;
 	height: 100%;
@@ -95,8 +95,8 @@
 
 /* ── Tablet (≤ 1024px) ───────────────────────────────────── */
 @media (max-width: 1024px) {
-	.oudio-modal-panel {
-		width: var(--oudio-modal-width-tablet, 420px);
+	.oudio-modal-beta-panel {
+		width: var(--oudio-modal-beta-width-tablet, 420px);
 	}
 
 
@@ -104,14 +104,14 @@
 
 /* ── Mobile (≤ 767px) ────────────────────────────────────── */
 @media (max-width: 767px) {
-	.oudio-modal-panel {
-		width: var(--oudio-modal-width-mobile, 100vw);
+	.oudio-modal-beta-panel {
+		width: var(--oudio-modal-beta-width-mobile, 100vw);
 	}
 
 
 }
 
 /* ── Body scroll lock ─────────────────────────────────────── */
-body.oudio-modal-open {
+body.oudio-modal-beta-open {
 	overflow: hidden;
 }
